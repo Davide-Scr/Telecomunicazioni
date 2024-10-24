@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatrice Elettrica</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> <!-- Font Roboto -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS per il menu a tendina */
+        #infoSection {
+            display: none; /* Nascondi il menu all'inizio */
+            position: absolute; /* Posiziona in modo assoluto */
+            right: 20px; /* Distanza dal lato destro */
+            top: 100px; /* Distanza dall'alto */
+            width: 300px; /* Larghezza del menu */
+            z-index: 10; /* Sovrapposizione */
+        }
+    </style>
+</head>
+<body>
+    <div class="page-title">
+        <h1 class="text-center">Calcolatrice Elettrica</h1>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">
+                            <img src="data:image/png;base64,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" alt="Icona Elettrica" style="width: 50px; height: auto;">
+                            Calcolatrice Elettrica
+                        </h5>
+                        <form id="calcForm">
+                            <div class="form-group">
+                                <label for="voltage">Voltaggio (V)</label>
+                                <input type="number" class="form-control" id="voltage" placeholder="Inserisci il voltaggio">
+                            </div>
+                            <div class="form-group">
+                                <label for="resistance">Resistenza (Ω)</label>
+                                <input type="number" class="form-control" id="resistance" placeholder="Inserisci la resistenza">
+                            </div>
+                            <button type="button" class="btn btn-primary btn-block" onclick="calculate()">Calcola</button>
+                        </form>
+                        <h3 class="mt-4 text-center" id="result"></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pulsante per aprire il menu a tendina -->
+        <div class="row justify-content-end mt-3">
+            <div class="col-md-2">
+                <button class="btn btn-info" onclick="toggleInfo()">Info</button>
+            </div>
+        </div>
+
+        <!-- Sezione Spiegativa (menu a tendina) -->
+        <div id="infoSection" class="card">
+            <div class="card-body">
+                <h5 class="card-title">Concetti Fondamentali</h5>
+                <p><strong>Voltaggio (V)</strong>: È la misura della differenza di potenziale elettrico tra due punti. Viene anche chiamato tensione e si misura in volt (V).</p>
+                <p><strong>Resistenza (Ω)</strong>: È la capacità di un materiale di opporsi al passaggio della corrente elettrica. Si misura in ohm (Ω).</p>
+                <p><strong>Corrente (I)</strong>: È il flusso di cariche elettriche attraverso un conduttore, come un filo. Si misura in ampere (A). La relazione tra corrente, voltaggio e resistenza è espressa dalla legge di Ohm: <em>I = V / R</em>.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleInfo() {
+            const infoSection = document.getElementById('infoSection');
+            if (infoSection.style.display === 'none' || infoSection.style.display === '') {
+                infoSection.style.display = 'block'; // Mostra il menu
+            } else {
+                infoSection.style.display = 'none'; // Nascondi il menu
+            }
+        }
+    </script>
+</body>
+</html>
