@@ -1,66 +1,55 @@
 body {
-    background-color: #e9ecef; /* Colore di sfondo più chiaro */
-    font-family: 'Roboto', sans-serif; /* Font Roboto */
+    background-color: #e9ecef;
+    font-family: 'Lato', sans-serif;
 }
 
-.page-title {
-    background-color: #007bff; /* Colore di sfondo azzurro */
-    padding: 20px; /* Spazio interno per un aspetto migliore */
-    color: white; /* Colore del testo bianco */
-    margin-bottom: 20px; /* Margine sotto il titolo */
+.container {
+    max-width: 600px;
+    margin-top: 50px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-.page-title h1 {
-    margin: 0; /* Rimuovi margini per centrare il titolo */
-    font-size: 2rem; /* Dimensione del font */
+.info-panel {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Posizione iniziale nascosta */
+    width: 300px;
+    height: 100%;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    transition: right 0.3s ease; /* Transizione fluida */
+    z-index: 10; /* Assicura che il pannello sia sopra gli altri elementi */
+}
+
+.info-panel.open {
+    right: 0; /* Posizione visibile quando aperta */
+}
+
+.toggle-button {
+    position: fixed;
+    top: 20px;
+    right: 320px; /* Spostiamo il pulsante a sinistra per non sovrapporsi al pannello */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 20; /* Assicura che il pulsante sia sempre sopra il pannello */
+    transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3;
 }
 
 .card {
-    border: 1px solid #007bff;
-    border-radius: 15px; /* Angoli più arrotondati */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Ombra più profonda */
-    transition: transform 0.3s; /* Effetto di hover */
-}
-
-.card:hover {
-    transform: scale(1.02); /* Ingrandimento al passaggio del mouse */
-}
-
-.card-title {
-    font-weight: bold;
-    font-size: 1.8rem; /* Aumenta la dimensione del titolo */
-    color: #0056b3; /* Colore leggermente più scuro */
-}
-
-.form-control {
-    border-radius: 10px; /* Angoli arrotondati per gli input */
-    border: 1px solid #007bff; /* Colore del bordo */
-}
-
-.form-control:focus {
-    border-color: #0056b3; /* Colore del bordo al focus */
-    box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Ombra al focus */
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border-radius: 10px; /* Angoli arrotondati per i bottoni */
-    font-weight: bold;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3; /* Colore al passaggio del mouse */
-}
-
-.btn-info {
-    width: 100%; /* Rendi il pulsante largo quanto la colonna */
-}
-
-#result {
-    font-weight: bold;
-    color: #28a745; /* Verde per i risultati */
-    border: 1px solid #28a745; /* Bordo verde per il risultato */
-    padding: 10px; /* Padding per il risultato */
-    border-radius: 10px; /* Angoli arrotondati per il risultato */
-    margin-top: 20px; /* Margine sopra il risultato */
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
 }
