@@ -1,92 +1,335 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatrice Elettrica Interattiva</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- CSS personalizzato -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcolatrice Elettrica Interattiva</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Puoi mantenere il tuo style.css oppure integrare qui eventuali stili aggiuntivi */
+    .exercise-container {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Contenitore principale delle calcolatrici -->
-<div class="container">
-    <h1 class="text-center mb-4">Calcolatrice Elettrica Interattiva</h1>
-    
-    <!-- Prima calcolatrice: Risultato in Ohm -->
-    <h3 class="mb-3">Calcolatrice 1: Risultato in Ohm</h3>
-    <form id="calcFormOhm">
-        <div class="mb-3">
-            <label for="voltage1" class="form-label">Voltaggio (in Volt):</label>
-            <input type="number" step="any" class="form-control" id="voltage1" placeholder="Inserisci il voltaggio">
-        </div>
-        <div class="mb-3">
-            <label for="current1" class="form-label">Corrente (in Ampere):</label>
-            <input type="number" step="any" class="form-control" id="current1" placeholder="Inserisci la corrente">
-        </div>
-        <div class="mb-3">
-            <label for="resistance1" class="form-label">Resistenza (in Ohm):</label>
-            <input type="number" step="any" class="form-control" id="resistance1" placeholder="Inserisci la resistenza">
-        </div>
-        <button type="button" class="btn btn-primary w-100" onclick="calculateOhm()">Calcola</button>
-    </form>
+<div class="container py-5">
+  <h1 class="text-center mb-4">🔌 Calcolatrice Elettrica Interattiva ⚡</h1>
+  <p class="text-center text-muted">Calcola facilmente i valori elettrici utilizzando le leggi fondamentali dell'elettrotecnica.</p>
 
-    <div class="mt-4">
-        <h4>Risultato:</h4>
-        <div id="resultOhm" class="alert alert-info card">Inserisci due valori per calcolare il terzo</div>
+  <div class="accordion" id="accordionCalculators">
+    <!-- Calcolatrice: Legge di Ohm -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOhm">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOhm" aria-expanded="true" aria-controls="collapseOhm">
+          ⚙️ Legge di Ohm
+        </button>
+      </h2>
+      <div id="collapseOhm" class="accordion-collapse collapse show" aria-labelledby="headingOhm" data-bs-parent="#accordionCalculators">
+        <div class="accordion-body">
+          <p><strong>Formula:</strong> V = I × R</p>
+          <form id="calcFormOhm">
+            <div class="mb-3">
+              <label for="voltage1" class="form-label">Voltaggio (V):</label>
+              <input type="number" step="any" class="form-control" id="voltage1">
+            </div>
+            <div class="mb-3">
+              <label for="current1" class="form-label">Corrente (A):</label>
+              <input type="number" step="any" class="form-control" id="current1">
+            </div>
+            <div class="mb-3">
+              <label for="resistance1" class="form-label">Resistenza (Ω):</label>
+              <input type="number" step="any" class="form-control" id="resistance1">
+            </div>
+            <button type="button" class="btn btn-primary w-100" onclick="calculateOhm()">Calcola</button>
+            <button type="button" class="btn btn-secondary w-100 mt-2" onclick="generateExercise('ohm')">Genera Esercizio</button>
+          </form>
+          <div id="resultOhm" class="alert alert-info mt-3">Inserisci due valori per calcolare il terzo.</div>
+          <!-- Container dove verrà inserito l'esercizio e il disegno del circuito -->
+          <div id="exercise-ohm" class="exercise-container"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Seconda calcolatrice: Risultato in Kilo-ohm -->
-    <h3 class="mb-3 mt-5">Calcolatrice 2: Risultato in Kilo-ohm</h3>
-    <form id="calcFormKOhm">
-        <div class="mb-3">
-            <label for="voltage2" class="form-label">Voltaggio (in Volt):</label>
-            <input type="number" step="any" class="form-control" id="voltage2" placeholder="Inserisci il voltaggio">
+    <!-- Calcolatrice: Leggi di Kirchhoff -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingKirchhoff">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKirchhoff" aria-expanded="false" aria-controls="collapseKirchhoff">
+          🔄 Leggi di Kirchhoff
+        </button>
+      </h2>
+      <div id="collapseKirchhoff" class="accordion-collapse collapse" aria-labelledby="headingKirchhoff" data-bs-parent="#accordionCalculators">
+        <div class="accordion-body">
+          <p><strong>Primo principio:</strong> La somma delle correnti entranti in un nodo è uguale alla somma delle correnti uscenti.</p>
+          <form id="calcFormKirchhoff">
+            <div class="mb-3">
+              <label for="currentIn" class="form-label">Corrente entrante (A):</label>
+              <input type="number" step="any" class="form-control" id="currentIn">
+            </div>
+            <div class="mb-3">
+              <label for="currentOut" class="form-label">Corrente uscente (A):</label>
+              <input type="number" step="any" class="form-control" id="currentOut">
+            </div>
+            <button type="button" class="btn btn-danger w-100" onclick="calculateKirchhoff()">Verifica</button>
+            <button type="button" class="btn btn-secondary w-100 mt-2" onclick="generateExercise('kirchhoff')">Genera Esercizio</button>
+          </form>
+          <div id="resultKirchhoff" class="alert alert-info mt-3">Inserisci le correnti.</div>
+          <div id="exercise-kirchhoff" class="exercise-container"></div>
         </div>
-        <div class="mb-3">
-            <label for="current2" class="form-label">Corrente (in Ampere):</label>
-            <input type="number" step="any" class="form-control" id="current2" placeholder="Inserisci la corrente">
-        </div>
-        <div class="mb-3">
-            <label for="resistance2" class="form-label">Resistenza (in Kilo-ohm):</label>
-            <input type="number" step="any" class="form-control" id="resistance2" placeholder="Inserisci la resistenza">
-        </div>
-        <button type="button" class="btn btn-success w-100" onclick="calculateKOhm()">Calcola</button>
-    </form>
-
-    <div class="mt-4">
-        <h4>Risultato:</h4>
-        <div id="resultKOhm" class="alert alert-info card">Inserisci due valori per calcolare il terzo</div>
+      </div>
     </div>
+
+    <!-- Calcolatrice: Principio di Sovrapposizione -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingSuperposition">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSuperposition" aria-expanded="false" aria-controls="collapseSuperposition">
+          🔀 Principio di Sovrapposizione
+        </button>
+      </h2>
+      <div id="collapseSuperposition" class="accordion-collapse collapse" aria-labelledby="headingSuperposition" data-bs-parent="#accordionCalculators">
+        <div class="accordion-body">
+          <p><strong>Principio:</strong> In un circuito lineare, la risposta totale è la somma delle risposte individuali di ciascuna sorgente considerata separatamente.</p>
+          <form id="calcFormSuperposition">
+            <div class="mb-3">
+              <label for="voltageA" class="form-label">Tensione Sorgente 1 (V):</label>
+              <input type="number" step="any" class="form-control" id="voltageA">
+            </div>
+            <div class="mb-3">
+              <label for="voltageB" class="form-label">Tensione Sorgente 2 (V):</label>
+              <input type="number" step="any" class="form-control" id="voltageB">
+            </div>
+            <button type="button" class="btn btn-warning w-100" onclick="calculateSuperposition()">Calcola</button>
+            <button type="button" class="btn btn-secondary w-100 mt-2" onclick="generateExercise('superposition')">Genera Esercizio</button>
+          </form>
+          <div id="resultSuperposition" class="alert alert-info mt-3">Inserisci le tensioni.</div>
+          <div id="exercise-superposition" class="exercise-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Pulsante per aprire/chiudere la tendina -->
-<button class="toggle-button" onclick="togglePanel()">Scopri la Legge di Ohm</button>
-
-<!-- Pannello laterale che spiega la Legge di Ohm -->
-<div class="info-panel" id="infoPanel">
-    <h4 class="text-white">Legge di Ohm</h4>
-    <p>Scopri come funziona la Legge di Ohm e calcola facilmente i tuoi risultati!</p>
-    <p>La formula base è:</p>
-    <ul>
-        <li><strong>V = I × R</strong> (Voltaggio = Corrente × Resistenza)</li>
-        <li><strong>I = V / R</strong> (Corrente = Voltaggio / Resistenza)</li>
-        <li><strong>R = V / I</strong> (Resistenza = Voltaggio / Corrente)</li>
-    </ul>
-    <p>Dove:</p>
-    <ul>
-        <li><strong>V</strong>: Voltaggio (Volt)</li>
-        <li><strong>I</strong>: Corrente (Ampere)</li>
-        <li><strong>R</strong>: Resistenza (Ohm)</li>
-    </ul>
-</div>
-
-<!-- Bootstrap JS -->
+<!-- Inclusione dei file JS di Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<!-- JS personalizzato -->
-<script src="script.js"></script>
+<!-- Puoi includere il tuo file script.js qui, ad esempio: <script src=\"script.js\"></script> -->
+<script>
+  // Funzioni per il calcolo (da personalizzare in base alle tue esigenze)
+  function calculateOhm() {
+    // Esempio di calcolo per la legge di Ohm
+    let voltage = parseFloat(document.getElementById("voltage1").value);
+    let current = parseFloat(document.getElementById("current1").value);
+    let resistance = parseFloat(document.getElementById("resistance1").value);
+    let result;
+    if (!isNaN(voltage) && !isNaN(current)) {
+      result = voltage;
+    } else if (!isNaN(voltage) && !isNaN(resistance)) {
+      result = voltage;
+    } else if (!isNaN(current) && !isNaN(resistance)) {
+      result = current * resistance;
+    } else {
+      result = "Inserisci almeno due valori.";
+    }
+    document.getElementById("resultOhm").innerHTML = result;
+  }
 
+  function calculateKirchhoff() {
+    // Esempio di semplice verifica della legge di Kirchhoff
+    let currentIn = parseFloat(document.getElementById("currentIn").value);
+    let currentOut = parseFloat(document.getElementById("currentOut").value);
+    let result = (currentIn === currentOut) ? "Legge verificata" : "La legge non è verificata";
+    document.getElementById("resultKirchhoff").innerHTML = result;
+  }
+
+  function calculateSuperposition() {
+    // Esempio di calcolo per il principio di sovrapposizione
+    let vA = parseFloat(document.getElementById("voltageA").value);
+    let vB = parseFloat(document.getElementById("voltageB").value);
+    let result = isNaN(vA) || isNaN(vB) ? "Inserisci le tensioni" : "Tensione totale: " + (vA + vB) + "V";
+    document.getElementById("resultSuperposition").innerHTML = result;
+  }
+
+  // Funzione per generare l'esercizio e il disegno del circuito
+  function generateExercise(type) {
+    let containerId, exerciseText;
+    switch (type) {
+      case 'ohm':
+        containerId = 'exercise-ohm';
+        exerciseText = "<p><strong>Esercizio:</strong> Calcola il voltaggio dato I = 2A e R = 5Ω.</p>";
+        break;
+      case 'kirchhoff':
+        containerId = 'exercise-kirchhoff';
+        exerciseText = "<p><strong>Esercizio:</strong> Verifica la legge di Kirchhoff in un nodo con 3A in entrata e 3A in uscita.</p>";
+        break;
+      case 'superposition':
+        containerId = 'exercise-superposition';
+        exerciseText = "<p><strong>Esercizio:</strong> Calcola la tensione totale in un circuito con due sorgenti da 10V e 5V.</p>";
+        break;
+    }
+    const container = document.getElementById(containerId);
+    container.innerHTML = exerciseText;
+    
+    // Creiamo e aggiungiamo un canvas per il disegno
+    let canvas = document.createElement("canvas");
+    canvas.width = 300;
+    canvas.height = 150;
+    container.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+    
+    // Disegniamo il circuito in base al tipo
+    switch (type) {
+      case 'ohm':
+        drawOhmCircuit(ctx);
+        break;
+      case 'kirchhoff':
+        drawKirchhoffCircuit(ctx);
+        break;
+      case 'superposition':
+        drawSuperpositionCircuit(ctx);
+        break;
+    }
+  }
+
+  // Funzioni per disegnare i circuiti sul canvas
+
+  function drawOhmCircuit(ctx) {
+    ctx.clearRect(0, 0, 300, 150);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    // Disegna una batteria (simbolo semplice)
+    ctx.beginPath();
+    ctx.moveTo(20, 75);
+    ctx.lineTo(40, 75);
+    ctx.moveTo(20, 65);
+    ctx.lineTo(20, 85);
+    ctx.moveTo(40, 65);
+    ctx.lineTo(40, 85);
+    ctx.stroke();
+    // Connessione dalla batteria al resistore
+    ctx.beginPath();
+    ctx.moveTo(40, 75);
+    ctx.lineTo(100, 75);
+    ctx.stroke();
+    // Disegna il resistore con una linea a zigzag
+    let x = 100, y = 75;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    let steps = 5;
+    let segment = (180 - x) / (steps * 2);
+    for (let i = 0; i < steps; i++) {
+      ctx.lineTo(x + segment, y - 15);
+      ctx.lineTo(x + 2 * segment, y + 15);
+      x += 2 * segment;
+    }
+    ctx.stroke();
+    // Connessione dalla fine del resistore
+    ctx.beginPath();
+    ctx.moveTo(180, 75);
+    ctx.lineTo(260, 75);
+    ctx.stroke();
+    // Chiusura del circuito (collega al polo negativo della batteria)
+    ctx.beginPath();
+    ctx.moveTo(260, 75);
+    ctx.lineTo(260, 120);
+    ctx.lineTo(20, 120);
+    ctx.lineTo(20, 85);
+    ctx.stroke();
+  }
+
+  function drawKirchhoffCircuit(ctx) {
+    ctx.clearRect(0, 0, 300, 150);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    // Disegna un nodo centrale
+    ctx.beginPath();
+    ctx.arc(150, 75, 5, 0, 2 * Math.PI);
+    ctx.fill();
+    // Linea in entrata da sinistra
+    ctx.beginPath();
+    ctx.moveTo(20, 75);
+    ctx.lineTo(150, 75);
+    ctx.stroke();
+    // Linea in uscita in alto a destra
+    ctx.beginPath();
+    ctx.moveTo(150, 75);
+    ctx.lineTo(250, 30);
+    ctx.stroke();
+    // Linea in uscita in basso a destra
+    ctx.beginPath();
+    ctx.moveTo(150, 75);
+    ctx.lineTo(250, 120);
+    ctx.stroke();
+  }
+
+  function drawSuperpositionCircuit(ctx) {
+  ctx.clearRect(0, 0, 300, 150);
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  // Disegna la prima sorgente di tensione (in alto a sinistra)
+  ctx.beginPath();
+  ctx.moveTo(20, 40);
+  ctx.lineTo(60, 40);
+  ctx.moveTo(20, 30);
+  ctx.lineTo(20, 50);
+  ctx.moveTo(60, 30);
+  ctx.lineTo(60, 50);
+  ctx.stroke();
+
+  // Disegna la seconda sorgente (in basso a sinistra)
+  ctx.beginPath();
+  ctx.moveTo(20, 110);
+  ctx.lineTo(60, 110);
+  ctx.moveTo(20, 100);
+  ctx.lineTo(20, 120);
+  ctx.moveTo(60, 100);
+  ctx.lineTo(60, 120);
+  ctx.stroke();
+
+  // Collega le sorgenti a un ramo comune (linee orizzontali)
+  ctx.beginPath();
+  ctx.moveTo(60, 40);
+  ctx.lineTo(120, 40);
+  ctx.moveTo(60, 110);
+  ctx.lineTo(120, 110);
+  ctx.stroke();
+
+  // Disegna un resistore verticale come zigzag tra le due linee
+  ctx.beginPath();
+  let x = 120, yTop = 40, yBottom = 110;
+  ctx.moveTo(x, yTop);
+  let steps = 4;
+  let seg = (yBottom - yTop) / (steps * 2);
+  for (let i = 0; i < steps; i++) {
+    ctx.lineTo(x + 10, yTop + seg + i * 2 * seg);
+    ctx.lineTo(x, yTop + 2 * seg + i * 2 * seg);
+  }
+  ctx.stroke();
+
+  // Collega il resistore al ramo di uscita
+  ctx.beginPath();
+  ctx.moveTo(x, yBottom);
+  ctx.lineTo(200, yBottom);
+  ctx.stroke();
+
+  // Completa il circuito collegando la parte alta e bassa
+  ctx.beginPath();
+  ctx.moveTo(200, yBottom);
+  ctx.lineTo(200, yTop);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(200, yTop);
+  ctx.lineTo(120, yTop);
+  ctx.stroke();
+}
+</script>
 </body>
 </html>
